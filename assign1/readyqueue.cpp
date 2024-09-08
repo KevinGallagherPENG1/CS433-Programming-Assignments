@@ -11,7 +11,7 @@ using namespace std;
  * @brief Constructor for the ReadyQueue class.
  */
  ReadyQueue::ReadyQueue()  {
-     //TODO: add your code here
+    count = 0; // Initialize the queue size
  }
 
 /**
@@ -19,6 +19,7 @@ using namespace std;
 */
 ReadyQueue::~ReadyQueue() {
     //TODO: add your code to release dynamically allocate memory
+    // No dynamic memory allocated???
 }
 
 /**
@@ -27,8 +28,19 @@ ReadyQueue::~ReadyQueue() {
  * @param pcbPtr: the pointer to the PCB to be added
  */
 void ReadyQueue::addPCB(PCB *pcbPtr) {
-    //TODO: add your code here
     // When adding a PCB to the queue, you must change its state to READY.
+    pcbPtr->state = ProcState::READY;  // Change state to READY
+    // Insert PCB based on priority (higher priority first)
+    int i;
+    for (i = count - 1; i >= 0; --i) {
+        if (pcbQueue[i]->priority > pcbPtr->priority) {
+            pcbQueue[i + 1] = pcbQueue[i];  // Shift elements to make space
+        } else {
+            break;
+        }
+    }
+    pcbQueue[i + 1] = pcbPtr;  // Insert PCB at the correct position
+    count++;  // Increment count
 }
 
 /**
@@ -37,8 +49,18 @@ void ReadyQueue::addPCB(PCB *pcbPtr) {
  * @return PCB*: the pointer to the PCB with the highest priority
  */
 PCB* ReadyQueue::removePCB() {
-    //TODO: add your code here
     // When removing a PCB from the queue, you must change its state to RUNNING.
+    if (count == 0) {
+        return NULL;  // Return null if the queue is empty
+    }
+    PCB* highestPriorityPCB = pcbQueue[0];  // Get the PCB with the highest priority
+    highestPriorityPCB->state = ProcState::RUNNING;    // Change state to RUNNING
+    // Shift remaining elements in the queue
+    for (int i = 1; i < count; ++i) {
+        pcbQueue[i - 1] = pcbQueue[i];
+    }
+    count--;  // Decrement count
+    return highestPriorityPCB;
 }
 
 /**
@@ -47,12 +69,15 @@ PCB* ReadyQueue::removePCB() {
  * @return int: the number of PCBs in the queue
  */
 int ReadyQueue::size() {
-    //TODO: add your code here
+    return count;
 }
 
 /**
  * @brief Display the PCBs in the queue.
  */
 void ReadyQueue::displayAll() {
-    //TODO: add your code here
+    cout << "PCB Queue: " << endl;
+    for (int i = 0; i < count; ++i) {
+        cout << "ID: " << pcbQueue[i]->id << ", Priority: " << pcbQueue[i]->priority << endl;
+    }
 }
