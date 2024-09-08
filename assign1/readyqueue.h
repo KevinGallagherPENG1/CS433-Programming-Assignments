@@ -18,13 +18,10 @@
  */
 class ReadyQueue {
 private:
-    // TODO: add your private member variables here
+    // Private member variables here
     // choose a data structure for the ReadyQueue. No STL class is allowed.
-
-    
-
-
-
+    PCB* pcbQueue[100]; // Array to hold PCBs (assuming max 100 processes)
+    int count;          // Number of elements in the queue
 public:
     /**
      * @brief Construct a new ReadyQueue object
