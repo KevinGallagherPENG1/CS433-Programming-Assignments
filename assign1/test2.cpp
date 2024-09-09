@@ -34,9 +34,10 @@ int main(int argc, char *argv[]) {
         int priority = rand() % 50 + 1;
         PCB *pcbPtr = new PCB(i + 1, priority);
         table.addPCB(pcbPtr, i);
-        if (rand() % 2 == 0) q2.addPCB(pcbPtr);
+        if (rand() % 2 == 0) q2.addPCB(pcbPtr);    //This seems to be giving issues
     }
     cout << "Initial ReadyQueue size = " << q2.size() << endl;
+
     //q2.display();
     auto t1 = std::chrono::high_resolution_clock::now();
     int idx = 0;
