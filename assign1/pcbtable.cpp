@@ -15,7 +15,14 @@
  * @param size: the capacity of the PCBTable
  */
 PCBTable::PCBTable(int size) {
-   table.reserve(size);
+   table.resize(size);
+}
+
+/**
+ * @brief Default constructor, will reserve a vector of 100 spaces
+ */
+PCBTable::PCBTable(){
+    table.resize(100);
 }
 
 /**
@@ -38,12 +45,13 @@ PCBTable::~PCBTable() {
  * @return PCB*: pointer to the PCB at index "idx"
  */
 PCB* PCBTable::getPCB(unsigned int idx) {
-    if(idx > table.size())
+
+    if(idx >= table.size()){
+        cout << "Index " << idx << " is out of bounds." <<endl;
         return NULL;
-    else{
-        PCB * point = table[idx];
-        return point;
     }
+    
+    return(table[idx]);
 }
 
 /**
@@ -53,5 +61,5 @@ PCB* PCBTable::getPCB(unsigned int idx) {
  */
 void PCBTable::addPCB(PCB *pcb, unsigned int idx) {
     // Add a PCB pointer to the PCBTable at index idx.
-    table.insert(table.begin() + idx, pcb);
+    table[idx] = pcb;
 }

@@ -18,7 +18,7 @@
 class PCBTable {
 
 private:
-    vector<PCB *> table;        //Table for holding PCB Pointers
+    vector<PCB*> table;        //Table for holding PCB Pointers
 
 public:
     /**
@@ -26,7 +26,12 @@ public:
      *
      * @param size: the capacity of the PCBTable
      */
-    PCBTable(int size = 100);
+    PCBTable(int size);
+
+    /**
+    * @brief default constructor, will initiate a vector with 100 spaces
+    */
+    PCBTable();
 
     /**
      * @brief Destroy the PCBTable object. Make sure to delete all the PCBs in the table.
@@ -70,4 +75,5 @@ public:
         PCB *pcb = new PCB(pid, priority);
         addPCB(pcb, idx);
     }
+
 };

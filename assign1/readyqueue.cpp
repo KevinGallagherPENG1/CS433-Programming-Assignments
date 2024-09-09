@@ -31,6 +31,7 @@ void ReadyQueue::addPCB(PCB *pcbPtr) {
     // When adding a PCB to the queue, you must change its state to READY.
     pcbPtr->state = ProcState::READY;  // Change state to READY
     // Insert PCB based on priority (higher priority first)
+    
     int i;
     for (i = count - 1; i >= 0; --i) {
         if (pcbQueue[i]->priority > pcbPtr->priority) {
@@ -41,6 +42,7 @@ void ReadyQueue::addPCB(PCB *pcbPtr) {
     }
     pcbQueue[i + 1] = pcbPtr;  // Insert PCB at the correct position
     count++;  // Increment count
+    
 }
 
 /**
