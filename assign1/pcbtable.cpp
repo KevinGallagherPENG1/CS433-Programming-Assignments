@@ -30,9 +30,8 @@ PCBTable::PCBTable(){
  *
  */
 PCBTable::~PCBTable() {
-    //For every pointer in table, delete it. Should deallocate all memory correctly
-    for(PCB * point : table)
-        delete point;
+    for(size_t i = 0; i < table.size(); i++)
+        delete(table[(int) i]);
     
     //Clear vector just to be sure
     table.clear();
@@ -48,7 +47,7 @@ PCB* PCBTable::getPCB(unsigned int idx) {
 
     if(idx >= table.size()){
         cout << "Index " << idx << " is out of bounds." <<endl;
-        return NULL;
+        return nullptr;
     }
     
     return(table[idx]);
@@ -59,7 +58,10 @@ PCB* PCBTable::getPCB(unsigned int idx) {
  *
  * @param pcb: the PCB to add
  */
-void PCBTable::addPCB(PCB *pcb, unsigned int idx) {
+void PCBTable::addPCB(PCB* pcb, unsigned int idx) {
     // Add a PCB pointer to the PCBTable at index idx.
+    if(table[idx] != nullptr)
+        delete table[idx];
+    
     table[idx] = pcb;
 }

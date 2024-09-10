@@ -31,9 +31,12 @@ void ReadyQueue::addPCB(PCB *pcbPtr) {
     // When adding a PCB to the queue, you must change its state to READY.
     pcbPtr->state = ProcState::READY;  // Change state to READY
     // Insert PCB based on priority (higher priority first)
+    
+    pcbQueue[count++] = pcbPtr;
+    trickleUp();
 
-    //Switched from > to <
-
+    //Bullshit that didnt work
+    /*
     int i;
     for (i = count - 1; i >= 0; --i) {
         if (pcbQueue[i]->priority < pcbPtr->priority) {
@@ -44,7 +47,7 @@ void ReadyQueue::addPCB(PCB *pcbPtr) {
     }
     pcbQueue[i + 1] = pcbPtr;  // Insert PCB at the correct position
     count++;  // Increment count
-    
+    */
 }
 
 /**
@@ -54,17 +57,26 @@ void ReadyQueue::addPCB(PCB *pcbPtr) {
  */
 PCB* ReadyQueue::removePCB() {
     // When removing a PCB from the queue, you must change its state to RUNNING.
+
+    PCB* highestPriorityPCB = pcbQueue[0];  // Get the PCB with the highest priority
+    highestPriorityPCB->state = ProcState::RUNNING;    // Change state to RUNNING
+
+    reheapify();
+    return highestPriorityPCB;
+
+    //Bullshit that didnt work
+    /*
     if (count == 0) {
         return NULL;  // Return null if the queue is empty
     }
-    PCB* highestPriorityPCB = pcbQueue[0];  // Get the PCB with the highest priority
-    highestPriorityPCB->state = ProcState::RUNNING;    // Change state to RUNNING
+    
     // Shift remaining elements in the queue
     for (int i = 1; i < count; ++i) {
         pcbQueue[i - 1] = pcbQueue[i];
     }
     count--;  // Decrement count
     return highestPriorityPCB;
+    */
 }
 
 /**
@@ -84,4 +96,72 @@ void ReadyQueue::displayAll() {
     for (int i = 0; i < count; ++i) {
         cout << "ID: " << pcbQueue[i]->id << ", Priority: " << pcbQueue[i]->priority << endl;
     }
+}
+
+
+//Private functions added in readyQueue.h
+
+bool ReadyQueue::isEven(int index){
+    return (index % 2 == 0);
+}
+
+int ReadyQueue::getParent(int index){
+    if(isEven(index))
+        return((index - 2) / 2);
+    else
+        return((index - 1) / 2);
+}
+
+void ReadyQueue::trickleUp(){
+    int x = count - 1;      //Last index in array
+
+    while(x > 0){
+        int parent = getParent(x);
+
+        //If parent has larger priority than pcbQueue[x], swap the two and update x
+        if(pcbQueue[x]->priority > pcbQueue[parent]->priority){
+            swap(x, parent);
+            x = parent;
+        } else 
+            break;
+    }
+}
+
+void ReadyQueue::swap(int posA, int posB){
+    PCB* temp = pcbQueue[posA];
+    pcbQueue[posA] = pcbQueue[posB];
+    pcbQueue[posB] = temp; 
+}
+
+void ReadyQueue::reheapify(){
+    int pos = 0;        //Current position, start at beginning of array
+    pcbQueue[0] = pcbQueue[count -1];       //Move last PCB to front
+    count--;
+
+    while(pos < count){
+        int smaller = getSmallerChild(pos);         //Gets index of smaller child
+
+        if(pcbQueue[pos]->priority >= pcbQueue[smaller]->priority || smaller == -1)      //If position is smaller or smaller is nonsense (OOB), break
+            break;
+
+        swap(pos, smaller);
+        pos = smaller;          //Update position
+    }
+}
+
+int ReadyQueue::getSmallerChild(int index){
+    int LC, RC;         //Positions of smaller children, left and right children
+    LC = (2 * index) + 1;
+    RC = (2 * index) + 2;
+
+    //Bound checking
+    if((LC > count - 1) && (RC > count - 1))
+        return -1;
+
+    if(pcbQueue[LC]->priority <= pcbQueue[RC]->priority)
+        return LC;
+    else    
+        return RC;
+
+
 }

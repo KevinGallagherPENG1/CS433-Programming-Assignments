@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     // random seed. 
     srand(1);
-    int size = 500;
+    int size = 200;
 
     ReadyQueue q2;    // Ready Queue
     PCBTable table(size);  // PCBTable of given size
@@ -34,8 +34,14 @@ int main(int argc, char *argv[]) {
         int priority = rand() % 50 + 1;
         PCB *pcbPtr = new PCB(i + 1, priority);
         table.addPCB(pcbPtr, i);
-        if (rand() % 2 == 0) q2.addPCB(pcbPtr);    //This seems to be giving issues
+        if (rand() % 2 == 0)
+            q2.addPCB(pcbPtr);
+        
+        std::cout << "i: " << i << std::endl;
     }
+
+    std::cout << "This got here";
+
     cout << "Initial ReadyQueue size = " << q2.size() << endl;
 
     //q2.display();

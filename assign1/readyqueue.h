@@ -20,8 +20,47 @@ class ReadyQueue {
 private:
     // Private member variables here
     // choose a data structure for the ReadyQueue. No STL class is allowed.
-    PCB* pcbQueue[100]; // Array to hold PCBs (assuming max 100 processes)
+    PCB* pcbQueue[500]; // Array to hold PCBs (assuming max 500 processes)
     int count;          // Number of elements in the queue
+
+    //Utility functions
+
+    /**
+     * @brief Swaps two positions in the pcbQueue array
+     * @param posA, posB: Positions to be swapped
+     */
+    void swap(int posA, int posB);
+
+    /**
+     * @brief Reheapifies array after adding / removing
+     */
+    void reheapify();
+
+    /**
+     * @brief Gets position of smaller child
+     * @param index: Position of parent index
+     * @return int: index of smaller child
+     */
+    int getSmallerChild(int index);
+
+    /**
+     * @brief Trickles up new addition to correct spot in pcbQueue
+     */
+    void trickleUp();
+
+    /**
+     * @brief Gets parent of index
+     * @param index: Index of child 
+     * @return int: Index of parent
+     */
+    int getParent(int index);
+
+    /**
+     * @brief Helper function to see if index is even or odd
+     * @return bool: True if even, false if odd
+     */
+    bool isEven(int index);
+
 public:
     /**
      * @brief Construct a new ReadyQueue object
