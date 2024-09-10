@@ -37,11 +37,11 @@ private:
     void reheapify();
 
     /**
-     * @brief Gets position of smaller child
+     * @brief Gets position of larger child
      * @param index: Position of parent index
-     * @return int: index of smaller child
+     * @return int: index of larger child
      */
-    int getSmallerChild(int index);
+    int getLargerChild(int index);
 
     /**
      * @brief Trickles up new addition to correct spot in pcbQueue

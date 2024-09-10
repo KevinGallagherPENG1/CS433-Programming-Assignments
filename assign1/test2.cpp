@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     // random seed. 
     srand(1);
-    int size = 200;
+    int size = 500;
 
     ReadyQueue q2;    // Ready Queue
     PCBTable table(size);  // PCBTable of given size
@@ -36,11 +36,7 @@ int main(int argc, char *argv[]) {
         table.addPCB(pcbPtr, i);
         if (rand() % 2 == 0)
             q2.addPCB(pcbPtr);
-        
-        std::cout << "i: " << i << std::endl;
     }
-
-    std::cout << "This got here";
 
     cout << "Initial ReadyQueue size = " << q2.size() << endl;
 

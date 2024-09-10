@@ -139,26 +139,26 @@ void ReadyQueue::reheapify(){
     count--;
 
     while(pos < count){
-        int smaller = getSmallerChild(pos);         //Gets index of smaller child
+        int larger = getLargerChild(pos);         //Gets index of larger child
 
-        if(pcbQueue[pos]->priority >= pcbQueue[smaller]->priority || smaller == -1)      //If position is smaller or smaller is nonsense (OOB), break
+        if(pcbQueue[pos]->priority >= pcbQueue[larger]->priority || larger == -1)      //If position is smaller or smaller is nonsense (OOB), break
             break;
 
-        swap(pos, smaller);
-        pos = smaller;          //Update position
+        swap(pos, larger);
+        pos = larger;          //Update position
     }
 }
 
-int ReadyQueue::getSmallerChild(int index){
+int ReadyQueue::getLargerChild(int index){
     int LC, RC;         //Positions of smaller children, left and right children
     LC = (2 * index) + 1;
     RC = (2 * index) + 2;
 
     //Bound checking
-    if((LC > count - 1) && (RC > count - 1))
+    if((LC >= count) && (RC >= count))
         return -1;
 
-    if(pcbQueue[LC]->priority <= pcbQueue[RC]->priority)
+    if(pcbQueue[LC]->priority > pcbQueue[RC]->priority)
         return LC;
     else    
         return RC;
