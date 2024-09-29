@@ -1,4 +1,3 @@
-
 /**
  * Assignment 2: Simple UNIX Shell
  * @file pcbtable.h
@@ -34,7 +33,7 @@ int parse_command(char command[], char *args[])
 {
     int i = 0;
     char *token = strtok(command, " \n");  // Tokenize by space and newline
-
+    
     while (token != NULL) {
         args[i++] = token;
         token = strtok(NULL, " \n");
@@ -44,13 +43,12 @@ int parse_command(char command[], char *args[])
 }
 
 // Function to execute a command in the child process
-void execute_command(char *args[], int background)
-{
+void execute_command(char *args[], int background) {
     pid_t pid = fork();
 
     if (pid == 0) {  // Child process
         if (execvp(args[0], args) == -1) {
-            perror("Execution failed");
+            cout << "Command not found" << endl;
         }
         exit(EXIT_FAILURE);
     } else if (pid > 0) {  // Parent process
@@ -63,26 +61,14 @@ void execute_command(char *args[], int background)
 }
 
 // Function to handle history (!!) command
-//Added execution of command within this function as it was not executing within the main loop
+// Added execution of command within this function as it was not executing within the main loop
 void handle_history(char *args[])
 {
     if (strlen(history) == 0) {
-        cout << "No command history" << endl;
+        cout << "No command history found." << endl;
     } else {
         cout << history << endl;
         strcpy(args[0], history);  // Set current command to the last history command
-
-        //Execute command
-        char *parsed_args[MAX_LINE / 2 + 1];
-        int num_args = parse_command(history, parsed_args);
-
-        int background = 0;
-        if(strcmp(args[num_args - 1], "&") == 0){
-            background = 1;
-            args[num_args - 1] = NULL;
-        }
-        
-        execute_command(parsed_args, background);
     }
 }
 
@@ -218,16 +204,11 @@ void execute_command_redirection(char *args[], int background){
 
         //Execute command
         if(execvp(args[0], args) == -1){
-            perror("Execution failed :(");
+            cout << "Command not found" << endl;
             exit(EXIT_FAILURE);
         }
-        else if(pid > 0){
-            if(!background){
-                //If not running in the background, wait for the child to complete
-                wait(NULL);
-            } else {
-                perror("Fork failed");
-            }
+        else if(pid > 0 && !background){
+            wait(NULL);
         }
     }    
 }
