@@ -293,7 +293,7 @@ int main(int argc, char *argv[])
             execute_pipe_command(args1, args2);
         } else {
             // Execute the parsed command
-            execute_command(args, background);
+            execute_command_redirection(args, background);
         }
     }
 
