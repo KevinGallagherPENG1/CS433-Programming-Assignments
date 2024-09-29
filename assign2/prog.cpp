@@ -67,7 +67,7 @@ void execute_command(char *args[], int background)
 void handle_history(char *args[])
 {
     if (strlen(history) == 0) {
-        cout << "No commands in history." << endl;
+        cout << "No command history" << endl;
     } else {
         cout << history << endl;
         strcpy(args[0], history);  // Set current command to the last history command
