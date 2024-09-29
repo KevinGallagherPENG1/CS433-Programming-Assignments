@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
         }
 
         // Check for empty input
-        if (command[0] == '\n') continue;
+        if (command[0] == '\n' || command[0] == '\0' || command[0] == ' ') continue;
 
         // Check for history (!!)
         if (strcmp(command, "!!\n") == 0) {
