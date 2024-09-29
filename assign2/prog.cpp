@@ -167,6 +167,72 @@ bool find_pipe(char *args[], char *args1[], char *args2[])
     return true;
 }
 
+//Function to execute commands with input and output redirection
+void execute_command_redirection(char *args[], int background){
+    int i = 0, input_redirect = 0, output_redirect = 0;
+    char *input_file = NULL;
+    char *output_file = NULL;
+
+    while(args[i] != NULL){
+        //Check for input file
+        if(strcmp(args[i], "<") == 0){
+            input_redirect = 1;
+            //Set input file name
+            input_file = args[i + 1];
+            args[i] = NULL;
+        } else if(strcmp(args[i], ">") == 0){
+            //same for output
+            output_redirect = 1;
+            output_file = args[i + 1];
+            args[i] = NULL;
+        }
+        i++;
+    }
+
+    pid_t pid = fork();
+
+    if(pid == 0){
+        //Child process
+        //Handle redirection
+        if(input_redirect){
+            int fd = open(input_file, O_RDONLY);
+            if(fd == -1){
+                perror("Failed to open input file");
+                exit(EXIT_FAILURE);
+            }
+            dup2(fd, STDIN_FILENO);
+            close(fd);
+        }
+
+        //Same for output
+        if(output_redirection){
+            int fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if(fd == -1){
+                perror("Failed to open output file");
+                exit(EXIT_FAILURE);
+            }
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
+        }
+
+
+        //Execute command
+        if(execvp(args[0], args) == -1){
+            perror("Execution failed :(");
+            exit(EXIT_FAILURE);
+        }
+        else if(pid > 0){
+            if(!background){
+                //If not running in the background, wait for the child to complete
+                wait(NULL);
+            } else {
+                perror("Fork failed");
+            }
+        }
+    }    
+}
+
+
 /**
  * @brief The main function of a simple UNIX Shell. You may add additional functions in this file for your implementation
  * @param argc The number of arguments
