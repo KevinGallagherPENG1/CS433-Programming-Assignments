@@ -63,6 +63,7 @@ void execute_command(char *args[], int background)
 }
 
 // Function to handle history (!!) command
+//Added execution of command within this function as it was not executing within the main loop
 void handle_history(char *args[])
 {
     if (strlen(history) == 0) {
@@ -70,6 +71,11 @@ void handle_history(char *args[])
     } else {
         cout << history << endl;
         strcpy(args[0], history);  // Set current command to the last history command
+
+        //Execute command
+        char *parsed_args[MAX_LINE / 2 + 1];
+        int num_args = parse_command(history, parsed_args);
+        execute_command(parsed_args, background);
     }
 }
 
