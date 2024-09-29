@@ -75,6 +75,13 @@ void handle_history(char *args[])
         //Execute command
         char *parsed_args[MAX_LINE / 2 + 1];
         int num_args = parse_command(history, parsed_args);
+
+        int background = 0;
+        if(strcmp(args[num_args - 1], "&") == 0){
+            background = 1;
+            args[num_args - 1] = NULL;
+        }
+        
         execute_command(parsed_args, background);
     }
 }
