@@ -205,7 +205,7 @@ void execute_command_redirection(char *args[], int background){
         }
 
         //Same for output
-        if(output_redirection){
+        if(output_redirect){
             int fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if(fd == -1){
                 perror("Failed to open output file");
@@ -230,7 +230,7 @@ void execute_command_redirection(char *args[], int background){
             }
         }
     }    
-
+}
 
 
 /**
