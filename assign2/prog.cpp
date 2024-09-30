@@ -29,21 +29,37 @@ char history[MAX_LINE]; // Declares history buffer to store the last command
  * @param args
  * @return int
  */
-int parse_command(char command[], char *args[])
+int parse_command(char command[], char *args[]) 
 {
-    int i = 0;
-    char *token = strtok(command, " \n");  // Tokenize by space and newline
-    
-    while (token != NULL) {
-        args[i++] = token;
-        token = strtok(NULL, " \n");
+    int num_args = 0;
+    char *token;
+
+    // Remove trailing newline character from the command if it exists
+    if ((token = strchr(command, '\n')) != NULL) {
+        *token = '\0';
     }
-    args[i] = NULL;  // Null-terminate the argument list
-    return i;        // Return the number of arguments parsed
+
+    // Use strtok to split the command into tokens (arguments)
+    token = strtok(command, " ");
+    while (token != NULL) {
+        // Check if the token ends with '&'
+        int len = strlen(token);
+        if (token[len - 1] == '&') {
+            token[len - 1] = '\0';  // Remove '&' from the token
+            args[num_args++] = token;  // Save the command (without '&')
+            break;  // '&' marks the end, no more tokens to process
+        }
+        args[num_args++] = token;  // Save the argument
+        token = strtok(NULL, " "); // Continue tokenizing
+    }
+
+    args[num_args] = NULL;  // Null-terminate the argument array
+    return num_args;        // Return the number of arguments parsed
 }
 
 // Function to execute a command in the child process
-void execute_command(char *args[], int background) {
+void execute_command(char *args[], int background) 
+{
     pid_t pid = fork();
 
     if (pid == 0) {  // Child process
@@ -153,21 +169,22 @@ bool find_pipe(char *args[], char *args1[], char *args2[])
     return true;
 }
 
-//Function to execute commands with input and output redirection
-void execute_command_redirection(char *args[], int background){
+// Function to execute commands with input and output redirection
+void execute_command_redirection(char *args[], int background)
+{
     int i = 0, input_redirect = 0, output_redirect = 0;
     char *input_file = NULL;
     char *output_file = NULL;
 
     while(args[i] != NULL){
-        //Check for input file
+        // Check for input file
         if(strcmp(args[i], "<") == 0){
             input_redirect = 1;
-            //Set input file name
+            // Set input file name
             input_file = args[i + 1];
             args[i] = NULL;
         } else if(strcmp(args[i], ">") == 0){
-            //same for output
+            // Same for output
             output_redirect = 1;
             output_file = args[i + 1];
             args[i] = NULL;
@@ -178,8 +195,8 @@ void execute_command_redirection(char *args[], int background){
     pid_t pid = fork();
 
     if(pid == 0){
-        //Child process
-        //Handle redirection
+        // Child process
+        // Handle redirection
         if(input_redirect){
             int fd = open(input_file, O_RDONLY);
             if(fd == -1){
@@ -190,7 +207,7 @@ void execute_command_redirection(char *args[], int background){
             close(fd);
         }
 
-        //Same for output
+        // Same for output
         if(output_redirect){
             int fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if(fd == -1){
@@ -202,7 +219,7 @@ void execute_command_redirection(char *args[], int background){
         }
 
 
-        //Execute command
+        // Execute command
         if(execvp(args[0], args) == -1){
             cout << "Command not found" << endl;
             exit(EXIT_FAILURE);
@@ -222,8 +239,8 @@ void execute_command_redirection(char *args[], int background){
  */
 int main(int argc, char *argv[])
 {
-    char command[MAX_LINE];       // the command that was entered
-    char *args[MAX_LINE / 2 + 1]; // hold parsed out command line arguments
+    char command[MAX_LINE];       // The command that was entered
+    char *args[MAX_LINE / 2 + 1]; // Hold parsed out command line arguments
     char *args1[MAX_LINE / 2 + 1]; // Command before pipe
     char *args2[MAX_LINE / 2 + 1]; // Command after pipe
     int should_run = 1;           /* flag to determine when to exit program */
