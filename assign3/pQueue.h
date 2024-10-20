@@ -1,10 +1,18 @@
 #include "pcb.h"
 using namespace std;
 
-class pQueue{
+static int MAX_SIZE = 10;
 
-    PCB queue[10];
-    int count = 0;
+class pQueue{
+public:
+    PCB queue[MAX_SIZE];
+    int count;
+
+pQueue(){
+    this->count = 0;
+}
+
+~pQueue();
 
     void swap(int posA, int posB){
         PCB temp = queue[posA];
@@ -87,5 +95,7 @@ class pQueue{
     int size(){
         return count;
     }
+
+private:
 
 }
