@@ -1,7 +1,7 @@
 /**
 * Assignment 3: CPU Scheduler
  * @file scheduler_fcfs.h
- * @author ??? (TODO: your name)
+ * @author Kevin Gallagher, Nicholas Everekyan
  * @brief This Scheduler class implements the FCSF scheduling algorithm.
  * @version 0.1
  */
@@ -17,8 +17,12 @@
  */
 class SchedulerFCFS : public Scheduler {
 private:
-    // TODO: add necessary member variables here for your implementation
-
+    // List of processes to be scheduled
+    std::vector<PCB> process_list;
+    
+    // Turnaround and waiting times for each process
+    std::vector<int> turnaround_times;
+    std::vector<int> waiting_times;
 public:
     /**
      * @brief Construct a new SchedulerFCFS object

@@ -14,11 +14,11 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    std::cout << "CS 433 Programming assignment 3" << std::endl;
-    std::cout << "Author: xxxxxx and xxxxxxx" << std::endl;     // TODO: add your name
-    std::cout << "Date: xx/xx/20xx" << std::endl;               // TODO: add date
+    std::cout << "CS 433 Programming Assignment 3" << std::endl;
+    std::cout << "Author: Nicholas Everekyan and Kevin Gallagher" << std::endl;     // TODO: add your name
+    std::cout << "Date: 10/25/2024" << std::endl;               // TODO: add date
     std::cout << "Course: CS433 (Operating Systems)" << std::endl;
-    std::cout << "Description : test RR scheduling algorithm " << std::endl;
+    std::cout << "Description : Test RR Scheduling Algorithm " << std::endl;
     std::cout << "=================================" << std::endl;
 
     // Make sure the user has provided the input file name
