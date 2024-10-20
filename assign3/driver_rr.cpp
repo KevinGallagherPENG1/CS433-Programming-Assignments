@@ -14,12 +14,12 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    std::cout << "CS 433 Programming Assignment 3" << std::endl;
-    std::cout << "Author: Nicholas Everekyan and Kevin Gallagher" << std::endl;     // TODO: add your name
-    std::cout << "Date: 10/25/2024" << std::endl;               // TODO: add date
-    std::cout << "Course: CS433 (Operating Systems)" << std::endl;
-    std::cout << "Description : Test RR Scheduling Algorithm " << std::endl;
-    std::cout << "=================================" << std::endl;
+    cout << "CS 433 Programming Assignment 3" << endl;
+    cout << "Author: Nicholas Everekyan and Kevin Gallagher" << endl;
+    cout << "Date: 10/25/2024" << endl;
+    cout << "Course: CS433 (Operating Systems)" << endl;
+    cout << "Description : Test RR Scheduling Algorithm " << endl;
+    cout << "=================================" << endl;
 
     // Make sure the user has provided the input file name
     if (argc < 3) {
