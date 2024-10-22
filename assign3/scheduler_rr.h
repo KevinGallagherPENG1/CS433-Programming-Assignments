@@ -15,13 +15,20 @@
 
 class SchedulerRR : public Scheduler {
 private:
-    // TODO: add necessary member variables here for your implementation
+    std::vector<PCB> processes;
+    int current;
+    std::vector<int> turnaround_times;
+    std::vector<int> waiting_times;
+    int remaining_burst_time[8];
+    int quantum;
 
 public:
     /**
      * @brief Construct a new SchedulerRR object
      */
     SchedulerRR(int time_quantum = 10);
+
+    SchedulerRR();
 
     /**
      * @brief Destroy the SchedulerRR object
