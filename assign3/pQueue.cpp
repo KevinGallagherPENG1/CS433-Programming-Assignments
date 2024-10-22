@@ -10,7 +10,7 @@ public:
 
 pQueue(){
     count = 0;
-}
+};
 
 ~pQueue(){};
 

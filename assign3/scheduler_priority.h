@@ -20,12 +20,13 @@
 #include "scheduler.h"
 #include "pQueue.cpp"
 
+
 class SchedulerPriority : public Scheduler {
 private:
-    pQueue queue;
-    std::vector<PCB> process_list;
-    std::vector<int> id_order;
-    std::vector<int> turnaround_times;
+    pQueue queue;                               //Priority queue based off of the priority of process
+    std::vector<PCB> process_list;              //Actual list of processes
+    std::vector<int> id_order;                  //Order of ID execution
+    std::vector<int> turnaround_times;          
     std::vector<int> waiting_times;
     
 public:
