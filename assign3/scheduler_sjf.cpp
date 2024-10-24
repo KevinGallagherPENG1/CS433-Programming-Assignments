@@ -45,7 +45,7 @@ void SchedulerSJF::simulate() {
 
         // Find the process with the shortest burst time that hasn't been completed yet
         for (size_t i = 0; i < process_list.size(); ++i) {
-            if (!completed[i] && process_list[i].burst_time < min_burst_time) {
+            if (!completed[i] && static_cast<int>(process_list[i].burst_time) < min_burst_time) {
                 min_burst_time = process_list[i].burst_time;
                 shortest_job_index = i;
             }
