@@ -53,9 +53,6 @@ public:
      */
     void simulate() override;
 
-    //Helper function to see if any of the processes still have time left
-    bool anyTimeRemaining(std::vector<PCB> processes);
 };
-
 
 #endif //ASSIGN3_SCHEDULER_RR_H
