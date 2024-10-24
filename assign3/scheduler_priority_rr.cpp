@@ -12,3 +12,15 @@
 
 // TODO: add implementation of SchedulerPriorityRR constructor, destrcutor and 
 // member functions init, print_results, and simulate here
+
+SchedulerPriorityRR::SchedulerPriorityRR(int time_quantum){
+    this->quantum = time_quantum;
+}
+
+SchedulerPriorityRR::~SchedulerPriorityRR(){};
+
+void SchedulerPriorityRR::init(std::vector<PCB>& process_list){};
+
+void SchedulerPriorityRR::simulate(){};
+
+void SchedulerPriorityRR::print_results(){};

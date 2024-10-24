@@ -1,7 +1,7 @@
 #include "pcb.h"
 using namespace std;
 
-const int MAX_SIZE = 10;
+const int MAX_SIZE = 50;
 
 class pQueue{
 public:

@@ -12,10 +12,21 @@
 #define ASSIGN3_SCHEDULER_PRIORITY_RR_H
 
 #include "scheduler.h"
+#include "pQueue.cpp"
+#include <string.h>
+#include <stdio.h>
+#include <sstream>
 
 class SchedulerPriorityRR : public Scheduler {
 private:
-    // TODO: add necessary member variables here for your implementation
+    pQueue queue;
+    int quantum;
+    std::vector<PCB> processes;
+    std::vector<int> id_order;
+    std::vector<int> turnaround_times;
+    std::vector<int> waiting_times;
+    std::vector<int> remaining_burst_time;
+
 
 public:
     /**
