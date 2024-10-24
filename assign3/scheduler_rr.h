@@ -16,10 +16,9 @@
 class SchedulerRR : public Scheduler {
 private:
     std::vector<PCB> processes;
-    int current;
     std::vector<int> turnaround_times;
     std::vector<int> waiting_times;
-    int remaining_burst_time[8];
+    std::vector<int> remaining_burst_time;
     int quantum;
 
 public:
@@ -53,6 +52,9 @@ public:
      *        It stops when all processes are finished.
      */
     void simulate() override;
+
+    //Helper function to see if any of the processes still have time left
+    bool anyTimeRemaining(std::vector<PCB> processes);
 };
 
 
