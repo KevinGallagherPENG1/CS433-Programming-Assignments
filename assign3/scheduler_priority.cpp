@@ -53,7 +53,7 @@ void SchedulerPriority::print_results(){
     double avg_waiting = 0;
 
     for(size_t i = 0; i < process_list.size(); i++){
-        cout << "Process " <<id_order[i] << " turn-around time = " << turnaround_times[i]
+        cout << "Process " <<(id_order[i] + 1) << " turn-around time = " << turnaround_times[i]
              << ", waiting time = " << waiting_times[i] << endl;
 
         total_turnaround += turnaround_times[i];
@@ -87,7 +87,7 @@ pQueue::pQueue(){
         while(pos < count){
             int larger = getLargerChild(pos);
 
-            if(larger == -1 || queue[pos].priority >= queue[larger].priority)
+            if(larger == -1 || queue[pos].priority >= queue[larger].priority || (queue[pos].priority == queue[larger].priority && queue[pos].burst_time <= queue[larger].burst_time))
                 break;
 
             swap(pos, larger);
@@ -99,16 +99,18 @@ pQueue::pQueue(){
         int LC = (2 * index) + 1;
         int RC = (2 * index) + 2;
 
-        if(LC >= count)
-            return -1;
+        if (LC >= count) return -1;
+        if (RC >= count) return LC;
 
-        if(RC >= count)
+        // Choose child with higher priority, or if equal, shorter burst time
+        if (queue[LC].priority > queue[RC].priority) {
             return LC;
-
-        if(queue[LC].priority > queue[RC].priority)
-            return LC;
-        else
+        } else if (queue[LC].priority < queue[RC].priority) {
             return RC;
+        } else {
+            // If both have the same priority, choose the one with shorter burst time
+            return (queue[LC].burst_time <= queue[RC].burst_time) ? LC : RC;
+        }
     };
 
     void pQueue::trickleUp(){
@@ -118,7 +120,7 @@ pQueue::pQueue(){
             int parent = getParent(x);
 
             //If parent has larger priority, then swap
-            if(queue[x].priority > queue[parent].priority){
+            if((queue[x].priority > queue[parent].priority) || (queue[x].priority == queue[parent].priority && queue[x].burst_time < queue[parent].burst_time)){
                 swap(x, parent);
                 x = parent;
             }else
