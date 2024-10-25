@@ -1,31 +1,42 @@
 /**
 * Assignment 3: CPU Scheduler
- * @file scheduler_priority_rr.h
+ * @file scheduler_priority.h
  * @author Kevin Gallagher, Nicholas Everekyan
- * @brief This Scheduler class implements the Priority RR scheduling algorithm.
+ * @brief This Scheduler class implements the Priority scheduling algorithm.
  * @version 0.1
  */
 //You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
 // Remember to add sufficient and clear comments to your code
 
+
+
+// This will be a nonpreemptive priority algorithm that we implement here.
+// A larger number from the PCB->priority represents a higher priority
+
+
 #ifndef ASSIGN3_SCHEDULER_PRIORITY_RR_H
 #define ASSIGN3_SCHEDULER_PRIORITY_RR_H
 
 #include "scheduler.h"
-#include "pQueue.cpp"
-#include <string.h>
-#include <stdio.h>
-#include <sstream>
+#include "pQueue.h"
+
 
 class SchedulerPriorityRR : public Scheduler {
 private:
-    pQueue queue;
-    int quantum;
-    std::vector<PCB> processes;
-    std::vector<int> id_order;
-    std::vector<int> turnaround_times;
+    pQueue queue;    
+    int quantum;                                
+    std::vector<PCB> processes;              
+    std::vector<int> id_order;                  
+    std::vector<int> turnaround_times;          
     std::vector<int> waiting_times;
     std::vector<int> remaining_burst_time;
+    std::vector<int> priorities;
+    std::vector<int> inOrderPriorities;
+    std::vector<int> burst_time;
+    std::vector<bool> completed_process;
+
+
+    bool checkPriority(std::vector<int> priorities, int priorityToCheck);
 
 
 public:

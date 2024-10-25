@@ -1,26 +1,21 @@
-#include "pcb.h"
-using namespace std;
+#include "pQueue.h"
 
-const int MAX_SIZE = 50;
 
-class pQueue{
-public:
-    PCB queue[MAX_SIZE];
-    int count;
 
-pQueue(){
-    count = 0;
-};
 
-~pQueue(){};
+    pQueue::pQueue(){
+        this->count = 0;
+    };
 
-    void swap(int posA, int posB){
+    pQueue::~pQueue(){};
+
+    void pQueue::swap(int posA, int posB){
         PCB temp = queue[posA];
         queue[posA] = queue[posB];
         queue[posB] = temp;
     };
 
-    void reheapify(){
+    void pQueue::reheapify(){
         int pos = 0;
         queue[0] = queue[count - 1];
         count--;
@@ -36,7 +31,7 @@ pQueue(){
         }
     };
 
-    int getLargerChild(int index){
+    int pQueue::getLargerChild(int index){
         int LC = (2 * index) + 1;
         int RC = (2 * index) + 2;
 
@@ -52,7 +47,7 @@ pQueue(){
             return RC;
     };
 
-    void trickleUp(){
+    void pQueue::trickleUp(){
         int x = count - 1;
 
         while(x > 0){
@@ -67,7 +62,7 @@ pQueue(){
         }
     };
 
-    int getParent(int index){
+    int pQueue::getParent(int index){
         return ((isEven(index)) ? ((index - 2) / 2) : ((index - 1) / 2));
         /*
         if(isEven(index))
@@ -77,25 +72,21 @@ pQueue(){
             */
     };
 
-    bool isEven(int index){
+    bool pQueue::isEven(int index){
         return (index % 2 == 0);   
     };
 
-    void addPCB(PCB pcb){
+    void pQueue::addPCB(PCB pcb){
          queue[count++] = pcb;
         trickleUp();
     };
 
-    PCB removePCB(){
+    PCB pQueue::removePCB(){
         PCB highestPriority = queue[0];
         reheapify();
         return highestPriority;
-    }
+    };
 
-    int size(){
+    int pQueue::size(){
         return count;
-    }
-
-private:
-
-};
+    };
