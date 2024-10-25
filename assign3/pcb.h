@@ -49,14 +49,7 @@ public:
         this->arrival_time = 0;
     }
 
-    PCB(){
-        this->id = id;
-        this->name = name;
-        this->priority = priority;
-        this->burst_time = burst_time;
-        this->arrival_time = 0;
-    }
-
+    PCB(){};
     /**
      * @brief Destroy the PCB object.
      *
