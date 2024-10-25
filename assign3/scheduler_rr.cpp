@@ -26,12 +26,12 @@ SchedulerRR::~SchedulerRR(){};
 
 void SchedulerRR::init(std::vector<PCB>& process_list){
     this->processes = process_list;
-    waiting_times.resize(8, 0);
-    turnaround_times.resize(8, 0);
-    remaining_burst_time.resize(8, 0);
+    waiting_times.resize(process_list.size(), 0);
+    turnaround_times.resize(process_list.size(), 0);
+    remaining_burst_time.resize(process_list.size(), 0);
 
     //Get burst time for each process
-    for(int i = 0; i < 8; i++){
+    for(size_t i = 0; i < process_list.size(); i++){
         remaining_burst_time[i] = process_list[i].burst_time;
     }
 };
@@ -42,11 +42,11 @@ void SchedulerRR::simulate(){
     int current = 0;
     bool completed_process[processes.size()];
 
-    for(int i = 0; i < 8; i++){
+    for(size_t i = 0; i < processes.size(); i++){
         completed_process[i] = false;
     }
 
-    while(completed != 8){
+    while(completed != processes.size()){
         PCB& pcb = processes[current];
         int exec_time = quantum;
 
@@ -91,7 +91,7 @@ void SchedulerRR::print_results(){
     double avg_turnaround = 0;
     double avg_waiting = 0;
 
-    for(size_t i = 0; i < 8; i++){
+    for(size_t i = 0; i < processes.size(); i++){
         cout << "Process " <<i << " turn-around time = " << turnaround_times[i]
              << ", waiting time = " << waiting_times[i] << endl;
 
@@ -99,8 +99,8 @@ void SchedulerRR::print_results(){
         total_waiting += waiting_times[i];
     }
 
-    avg_turnaround = ((double) total_turnaround) /  8;
-    avg_waiting = ((double) total_waiting) / 8;
+    avg_turnaround = ((double) total_turnaround) /  processes.size();
+    avg_waiting = ((double) total_waiting) / processes.size();
 
     cout << "Average turn-around time: " << avg_turnaround << ", Average waiting time = " << avg_waiting << endl;
 }

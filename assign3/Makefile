@@ -23,11 +23,11 @@ rr: scheduler_rr.o driver_rr.o
 sjf: scheduler_sjf.o driver_sjf.o
 	$(CC) -o sjf scheduler_sjf.o driver_sjf.o  $(LDFLAGS) $(LIB)
 
-priority: pQueue.o scheduler_priority.o driver_priority.o
-	$(CC) -o pQueue.o priority scheduler_priority.o driver_priority.o $(LDFLAGS) $(LIB)
+priority:  scheduler_priority.o driver_priority.o
+	$(CC) -o  priority scheduler_priority.o driver_priority.o $(LDFLAGS) $(LIB)
 
-priority_rr: pQueue.o scheduler_priority_rr.o driver_priority_rr.o scheduler.h
-	$(CC) $(CFLAGS) pQueue.o scheduler_priority_rr.o driver_priority_rr.o -o priority_rr
+priority_rr:  scheduler_priority_rr.o driver_priority_rr.o scheduler.h
+	$(CC) $(CFLAGS)  scheduler_priority_rr.o driver_priority_rr.o -o priority_rr
 
 .cpp.o:
 	$(CC) -c $(CFLAGS) $< -o $@

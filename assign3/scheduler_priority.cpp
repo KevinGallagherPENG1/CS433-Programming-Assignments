@@ -20,9 +20,10 @@ SchedulerPriority::~SchedulerPriority(){};
 
 void SchedulerPriority::init(std::vector<PCB>& processes){
     this->process_list = processes;
-    turnaround_times.resize(8, 0);
-    waiting_times.resize(8, 0);
-    id_order.resize(8, 0);
+    turnaround_times.resize(processes.size(), 0);
+    waiting_times.resize(processes.size(), 0);
+    id_order.resize(processes.size(), 0);
+
 
     //Add each process to the queue (based off of priority)
     for(PCB process : processes)
@@ -31,9 +32,9 @@ void SchedulerPriority::init(std::vector<PCB>& processes){
 
 void SchedulerPriority::simulate(){
     int current_time = 0;
-    int i = 0;
 
-    for(int i = 0; i < 8; i++){
+
+    for(size_t i = 0; i < process_list.size(); i++){
         PCB process = queue.removePCB();
         
         //Get wait time and turnaround time for process
@@ -51,7 +52,7 @@ void SchedulerPriority::print_results(){
     double avg_turnaround = 0;
     double avg_waiting = 0;
 
-    for(size_t i = 0; i < 8; i++){
+    for(size_t i = 0; i < process_list.size(); i++){
         cout << "Process " <<id_order[i] << " turn-around time = " << turnaround_times[i]
              << ", waiting time = " << waiting_times[i] << endl;
 
@@ -59,8 +60,91 @@ void SchedulerPriority::print_results(){
         total_waiting += waiting_times[i];
     }
 
-    avg_turnaround = ((double) total_turnaround) /  8;
-    avg_waiting = ((double) total_waiting) / 8;
+    avg_turnaround = ((double) total_turnaround) /  process_list.size();
+    avg_waiting = ((double) total_waiting) / process_list.size();
 
     cout << "Average turn-around time: " << avg_turnaround << ", Average waiting time = " << avg_waiting << endl;
 }
+
+//FORWARD DECLARATION?
+pQueue::pQueue(){
+        this->count = 0;
+    };
+
+    pQueue::~pQueue(){};
+
+    void pQueue::swap(int posA, int posB){
+        PCB temp = queue[posA];
+        queue[posA] = queue[posB];
+        queue[posB] = temp;
+    };
+
+    void pQueue::reheapify(){
+        int pos = 0;
+        queue[0] = queue[count - 1];
+        count--;
+
+        while(pos < count){
+            int larger = getLargerChild(pos);
+
+            if(larger == -1 || queue[pos].priority >= queue[larger].priority)
+                break;
+
+            swap(pos, larger);
+            pos = larger;
+        }
+    };
+
+    int pQueue::getLargerChild(int index){
+        int LC = (2 * index) + 1;
+        int RC = (2 * index) + 2;
+
+        if(LC >= count)
+            return -1;
+
+        if(RC >= count)
+            return LC;
+
+        if(queue[LC].priority > queue[RC].priority)
+            return LC;
+        else
+            return RC;
+    };
+
+    void pQueue::trickleUp(){
+        int x = count - 1;
+
+        while(x > 0){
+            int parent = getParent(x);
+
+            //If parent has larger priority, then swap
+            if(queue[x].priority > queue[parent].priority){
+                swap(x, parent);
+                x = parent;
+            }else
+                break;
+        }
+    };
+
+    int pQueue::getParent(int index){
+        return ((isEven(index)) ? ((index - 2) / 2) : ((index - 1) / 2));
+    };
+
+    bool pQueue::isEven(int index){
+        return (index % 2 == 0);   
+    };
+
+    void pQueue::addPCB(PCB pcb){
+         queue[count++] = pcb;
+        trickleUp();
+    };
+
+    PCB pQueue::removePCB(){
+        PCB highestPriority = queue[0];
+        reheapify();
+        return highestPriority;
+    };
+
+    int pQueue::size(){
+        return count;
+    };
