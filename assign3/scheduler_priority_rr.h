@@ -18,6 +18,7 @@
 #define ASSIGN3_SCHEDULER_PRIORITY_RR_H
 
 #include "scheduler.h"
+#include <algorithm>
 #include "pcb.h"
 using namespace std;
 
@@ -108,6 +109,7 @@ public:
       */
 	void displayAll();
 
+    void sortQueue();
 };
 
 

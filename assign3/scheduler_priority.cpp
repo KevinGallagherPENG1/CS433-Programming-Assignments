@@ -11,6 +11,8 @@
 
 #include "scheduler_priority.h"
 
+using namespace std;
+
 // TODO: add implementation of SchedulerPriority constructor, destrcutor and 
 // member functions init, print_results, and simulate here
 
@@ -137,16 +139,27 @@ pQueue::pQueue(){
     };
 
     void pQueue::addPCB(PCB pcb){
-         queue[count++] = pcb;
-        trickleUp();
+        queue[count++] = pcb;
+        sortQueue();
     };
 
     PCB pQueue::removePCB(){
         PCB highestPriority = queue[0];
-        reheapify();
+        queue[0] = queue[--count]; 
+        sortQueue(); 
         return highestPriority;
     };
 
     int pQueue::size(){
         return count;
     };
+
+    void pQueue::sortQueue(){
+        std::sort(queue, queue + count, [](const PCB& a, const PCB& b){
+            // Sort by priority first, and by burst time if priorities are equal
+            if (a.priority != b.priority) {
+                return a.priority > b.priority;  // Higher priority first
+            }   
+            return a.burst_time < b.burst_time;  // Lower burst time first
+        });
+};

@@ -18,6 +18,7 @@
 #define ASSIGN3_SCHEDULER_PRIORITY_H
 
 #include "scheduler.h"
+#include <algorithm>
 #include "pcb.h"
 using namespace std;
 
@@ -67,6 +68,8 @@ private:
      * @return bool: True if even, false if odd
      */
     bool isEven(int index);
+
+    void sortQueue();
 
 public:
     /**

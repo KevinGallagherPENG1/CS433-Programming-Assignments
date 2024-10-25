@@ -128,7 +128,6 @@ bool SchedulerPriorityRR::checkPriority(std::vector<int> priorities, int priorit
 
 
 //FORWARD DECLARATION?
-
 pQueue::pQueue(){
         this->count = 0;
     };
@@ -149,7 +148,7 @@ pQueue::pQueue(){
         while(pos < count){
             int larger = getLargerChild(pos);
 
-            if(larger == -1 || queue[pos].priority >= queue[larger].priority)
+            if(larger == -1 || queue[pos].priority >= queue[larger].priority || (queue[pos].priority == queue[larger].priority && queue[pos].burst_time <= queue[larger].burst_time))
                 break;
 
             swap(pos, larger);
@@ -161,16 +160,18 @@ pQueue::pQueue(){
         int LC = (2 * index) + 1;
         int RC = (2 * index) + 2;
 
-        if(LC >= count)
-            return -1;
+        if (LC >= count) return -1;
+        if (RC >= count) return LC;
 
-        if(RC >= count)
+        // Choose child with higher priority, or if equal, shorter burst time
+        if (queue[LC].priority > queue[RC].priority) {
             return LC;
-
-        if(queue[LC].priority > queue[RC].priority)
-            return LC;
-        else
+        } else if (queue[LC].priority < queue[RC].priority) {
             return RC;
+        } else {
+            // If both have the same priority, choose the one with shorter burst time
+            return (queue[LC].burst_time <= queue[RC].burst_time) ? LC : RC;
+        }
     };
 
     void pQueue::trickleUp(){
@@ -180,22 +181,16 @@ pQueue::pQueue(){
             int parent = getParent(x);
 
             //If parent has larger priority, then swap
-            if(queue[x].priority > queue[parent].priority){
+            if((queue[x].priority > queue[parent].priority) || (queue[x].priority == queue[parent].priority && queue[x].burst_time < queue[parent].burst_time)){
                 swap(x, parent);
                 x = parent;
-            } else
+            }else
                 break;
         }
     };
 
     int pQueue::getParent(int index){
         return ((isEven(index)) ? ((index - 2) / 2) : ((index - 1) / 2));
-        /*
-        if(isEven(index))
-            return((index - 2) / 2);
-        else
-            return((index - 1) / 2);
-            */
     };
 
     bool pQueue::isEven(int index){
@@ -203,13 +198,14 @@ pQueue::pQueue(){
     };
 
     void pQueue::addPCB(PCB pcb){
-         queue[count++] = pcb;
-        trickleUp();
+        queue[count++] = pcb;
+        sortQueue();
     };
 
     PCB pQueue::removePCB(){
         PCB highestPriority = queue[0];
-        reheapify();
+        queue[0] = queue[--count]; 
+        sortQueue(); 
         return highestPriority;
     };
 
@@ -217,3 +213,12 @@ pQueue::pQueue(){
         return count;
     };
 
+    void pQueue::sortQueue(){
+        std::sort(queue, queue + count, [](const PCB& a, const PCB& b){
+            // Sort by priority first, and by burst time if priorities are equal
+            if (a.priority != b.priority) {
+                return a.priority > b.priority;  // Higher priority first
+            }   
+            return a.burst_time < b.burst_time;  // Lower burst time first
+        });
+};
