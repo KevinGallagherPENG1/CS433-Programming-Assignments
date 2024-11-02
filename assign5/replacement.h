@@ -1,7 +1,7 @@
 /**
 * Assignment 5: Page replacement algorithms
  * @file replacement.h
- * @author ??? (TODO: your name)
+ * @author Nicholas Everekyan, Kevin Gallagher
  * @brief A base class for different page replacement algorithms.
  * @version 0.1
  */
@@ -10,7 +10,8 @@
 #pragma once
 
 #include "pagetable.h"
-
+#include <unordered_set>
+#include <iostream>
 
 /**
  * @brief A base class to simulate page replacement algorithms.
@@ -20,8 +21,11 @@ class Replacement
 {
 protected:      // subclasses can access these members
     // Member variable for the page table
-    PageTable page_table;
-	// TODO: Add additional member variables to this class
+    PageTable page_table;    // Page table for managing pages
+    int num_frames;          // Total number of frames
+    int page_faults = 0;     // Count of page faults
+    int page_replacements = 0; // Count of page replacements
+    std::unordered_set<int> frames_in_use; // Set of frames currently in use
 	
 public:
 	/**
@@ -36,7 +40,6 @@ public:
      */
     virtual ~Replacement();
 
-	// TODO: Add additional member variables and functions if needed
     /**
 	 * @brief Simulate a single page access.
      * @details If the page is valid, it calls the touch_page function. 

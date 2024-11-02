@@ -1,7 +1,7 @@
 /**
 * Assignment 5: Page replacement algorithms
  * @file fifo_replacement.cpp
- * @author ??? (TODO: your name)
+ * @author Nicholas Everekyan, Kevin Gallagher
  * @brief A class implementing the FIFO page replacement algorithms
  * @version 0.1
  */
@@ -10,25 +10,41 @@
 
 #include "fifo_replacement.h"
 
-// TODO: Add your implementation here
 FIFOReplacement::FIFOReplacement(int num_pages, int num_frames)
 : Replacement(num_pages, num_frames)
 {
-    // TODO: Add additional implementation code
+    // Initializes the base Replacement class with given pages and frames
 }
 
-// TODO: Add your implementations for desctructor, load_page, replace_page here
 FIFOReplacement::~FIFOReplacement() {
-    // TODO: Add necessary code here
+    // Destructor (no dynamic allocation to clear in this case)
 }
 
 // Access an invalid page, but free frames are available
 void FIFOReplacement::load_page(int page_num) {
-    // TODO: Update your data structure FIFO replacement and pagetable
+    // Add page to the page table and mark it as valid
+    page_table.set_frame(page_num, frames_in_use.size());
+    page_table.set_valid(page_num, true);
+    // Add the page to the queue (FIFO order) and mark as loaded in frames
+    page_queue.push(page_num);
+    frames_in_use.insert(page_num);
 }
 
 // Access an invalid page and no free frames are available
 int FIFOReplacement::replace_page(int page_num) {
-    // TODO: Update your data structure FIFO replacement and pagetable
-    return 0;
+    // Identify the oldest page (front of queue)
+    int victim_page = page_queue.front();
+    page_queue.pop();
+    
+    // Invalidate the victim page in the page table
+    page_table.set_valid(victim_page, false);
+    frames_in_use.erase(victim_page);
+
+    // Add the new page in the freed frame and update the queue
+    page_table.set_frame(page_num, page_table[victim_page].frame_num);
+    page_table.set_valid(page_num, true);
+    page_queue.push(page_num);
+    frames_in_use.insert(page_num);
+
+    return victim_page; // Return the replaced page number
 }

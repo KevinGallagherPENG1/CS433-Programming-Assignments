@@ -1,7 +1,7 @@
 /**
 * Assignment 5: Page replacement algorithms
  * @file lifo_replacement.h
- * @author ??? (TODO: your name)
+ * @author Nicholas Everekyan, Kevin Gallagher
  * @brief A class implementing the LIFO page replacement algorithms
  * @version 0.1
  */
@@ -13,13 +13,14 @@
 // Remember to add comments to your code
 
 #include "replacement.h"
+#include <stack>
 
 /**
  * @brief A class to simulate LIFO (last in first out) page replacement algorithm.
  */
 class LIFOReplacement : public Replacement {
 private:
-    // TODO: Add necessary member variables to this class
+    std::stack<int> page_stack;
 
 public:
     /**

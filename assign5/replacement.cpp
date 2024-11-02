@@ -1,7 +1,7 @@
 /**
 * Assignment 5: Page replacement algorithms
  * @file replacement.cpp
- * @author ??? (TODO: your name)
+ * @author Nicholas Everekyan, Kevin Gallagher
  * @brief A base class for different page replacement algorithms.
  * @version 0.1
  */
@@ -10,36 +10,44 @@
 #include <iostream>
 #include "replacement.h"
 
-// TODO: Add your implementation of the Replacement member functions here
-
 // Constructor
 Replacement::Replacement(int num_pages, int num_frames)
-: page_table(num_pages)
-{
-	//TODO: Add your implementation here
+    : page_table(num_pages), num_frames(num_frames) {
+    // Initialize the base Replacement class with given pages and frames
 }
 
 // Destructor
 Replacement::~Replacement()
 {
-    // TOOD: Add your code here
+    // Destructor (no dynamic memory to clear in this case)
 }
 
 // Simulate a single page access 
 // @return true if it's a page fault
-bool Replacement::access_page(int page_num, bool is_write)
-{
-    // TODO: Add your implementation here
-    // If the page is valid, it calls the touch_page function. 
-    // If the page is not valid but free frames are available, it calls the load_page function.
-    // If the page is not valid and there is no free frame, it calls the replace_page function.
-    return false;
+bool Replacement::access_page(int page_num, bool is_write) {
+    // Check if the page is already in frames
+    if (frames_in_use.find(page_num) != frames_in_use.end()) {
+        touch_page(page_num); // Update page's access status
+        return false; // No page fault
+    }
+
+    // Page fault occurs
+    page_faults++;
+
+    // Load page if there's free frame, otherwise replace a page
+    if (frames_in_use.size() < num_frames) {
+        load_page(page_num);
+    } else {
+        page_replacements++;
+        replace_page(page_num);
+    }
+
+    return true; // Page fault occurred
 }
 
 // Print out statistics of simulation
 void Replacement::print_statistics() const {
-        // TODO: print out the number of references, number of page faults and number of page replacements
-		std::cout << "Number of references: \t\t"  << std::endl;
-		std::cout << "Number of page faults: \t\t" << std::endl;
-		std::cout << "Number of page replacements: \t"  << std::endl;
+    std::cout << "Number of references: \t\t" << page_faults + page_replacements << std::endl;
+    std::cout << "Number of page faults: \t\t" << page_faults << std::endl;
+    std::cout << "Number of page replacements: \t" << page_replacements << std::endl;
 }

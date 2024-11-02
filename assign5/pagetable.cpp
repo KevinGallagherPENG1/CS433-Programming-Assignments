@@ -1,7 +1,7 @@
 /**
 * Assignment 5: Page replacement algorithms
  * @file pagetable.cpp
- * @author ??? (TODO: your name)
+ * @author Nicholas Everekyan, Kevin Gallagher
  * @brief This class represents a traditional pagetable data structure.
  * @version 0.1
  */
@@ -10,15 +10,15 @@
 
 #include "pagetable.h"
 
-// TODO: Add your implementation of PageTable
 // Constrcutor
-// TODO: Add your code
-PageTable::PageTable(int num_pages) {
-    
+PageTable::PageTable(int num_pages)
+{
+    // Initialize the page table with the specified number of pages
+    pages.resize(num_pages);
 }
 
 // Destructor
-// TODO: Add your code
 PageTable::~PageTable() {
-    
+    // Destructor: Clean up any dynamically allocated resources if needed (none here)
 }
+

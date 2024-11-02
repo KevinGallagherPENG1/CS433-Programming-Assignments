@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <vector>
+#include <chrono> // For measuring run-time
 
 #include "fifo_replacement.h"
 #include "lru_replacement.h"
@@ -97,15 +98,66 @@ int main(int argc, char *argv[]) {
     std::cout << "\n================================Test 2==================================================\n";
 
     std::cout << "****************Simulate FIFO replacement****************************" << std::endl;
-    // TODO: Add your code to calculate number of page faults using FIFO replacement algorithm
-    // TODO: print the statistics and run-time
+    // FIFO replacement algorithm
+    in.open("large_refs.txt");
+    if (!in.is_open()) {
+        std::cerr << "Cannot open large_refs.txt to read. Please check your path." << std::endl;
+        return 1;
+    }
+    std::vector<int> large_refs;
+    while (in >> val) {
+        large_refs.push_back(val);
+    }
+    FIFOReplacement vm_fifo(num_pages, num_frames);
+    auto start = std::chrono::high_resolution_clock::now();
+    for (const int& address : large_refs) {
+        int page_num = address >> page_offset_bits;
+        vm_fifo.access_page(page_num, 0);
+    }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> fifo_duration = end - start;
+    vm_fifo.print_statistics();
+    std::cout << "FIFO execution time: " << fifo_duration.count() << " seconds" << std::endl;
+    in.close();
 
     std::cout << "****************Simulate LIFO replacement****************************" << std::endl;
-    // TODO: Add your code to calculate number of page faults using LIFO replacement algorithm
-    // TODO: print the statistics and run-time
+    // LIFO replacement algorithm
+    in.open("large_refs.txt");
+    if (!in.is_open()) {
+        std::cerr << "Cannot open large_refs.txt to read. Please check your path." << std::endl;
+        return 1;
+    }
+    LIFOReplacement vm_lifo(num_pages, num_frames);
+    start = std::chrono::high_resolution_clock::now();
+    for (const int& address : large_refs) {
+        int page_num = address >> page_offset_bits;
+        vm_lifo.access_page(page_num, 0);
+    }
+    end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> lifo_duration = end - start;
+    vm_lifo.print_statistics();
+    std::cout << "LIFO execution time: " << lifo_duration.count() << " seconds" << std::endl;
+    in.close();
 
     std::cout << "****************Simulate LRU replacement****************************" << std::endl;
-    // TODO: Add your code to calculate number of page faults using LRU replacement algorithm
-    // TODO: print the statistics and run-time
+    // LRU replacement algorithm
+    in.open("large_refs.txt");
+    if (!in.is_open()) {
+        std::cerr << "Cannot open large_refs.txt to read. Please check your path." << std::endl;
+        return 1;
+    }
+    LRUReplacement vm_lru(num_pages, num_frames);
+    start = std::chrono::high_resolution_clock::now();
+    for (const int& address : large_refs) {
+        int page_num = address >> page_offset_bits;
+        vm_lru.access_page(page_num, 0);
+    }
+    end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> lru_duration = end - start;
+    vm_lru.print_statistics();
+    std::cout << "LRU execution time: " << lru_duration.count() << " seconds" << std::endl;
+    in.close();
+
+    return 0;
 
 }
