@@ -84,7 +84,7 @@ void Buffer::print_buffer() {
     for (size_t i = 0; i < buffer.size(); ++i) {
         std::cout << buffer[i];
         if (i < buffer.size() - 1) {
-            std::cout << " "; // keeps space between the items
+            std::cout << " "; // Keeps space between the items
         }
     }
     std::cout << "]" << std::endl; // Closes buffer display with no trailing space
