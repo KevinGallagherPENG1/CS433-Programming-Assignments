@@ -1,13 +1,18 @@
 /**
 * Assignment 4: Producer Consumer Problem
  * @file buffer.h
- * @author ??? (TODO: your name)
+ * @author Nicholas Everekyan, Kevin Gallagher
  * @brief header file for the buffer class
  * @version 0.1
  */
 
 #ifndef ASSIGN4_BUFFER_H
 #define ASSIGN4_BUFFER_H
+
+#include <vector>
+#include <pthread.h>
+#include <iostream>
+#include <cstdlib>
 
 // Define the data type of the buffer items
 typedef int buffer_item;
@@ -17,7 +22,11 @@ typedef int buffer_item;
  */
 class Buffer {
 private:
-    // TODO: Add your implementation of the buffer class here
+    std::vector<buffer_item> buffer;  // Buffer storage
+    int size;                         // Maximum buffer size
+    pthread_mutex_t mutex;            // Mutex for buffer synchronization
+    pthread_cond_t not_empty;         // Condition variable for buffer not empty
+    pthread_cond_t not_full;          // Condition variable for buffer not full
 
 public:
     /**
