@@ -50,7 +50,7 @@ void *consumer(void *param) {
             cout << "Consumer: Removed item " << item << endl;
             buffer.print_buffer();
         } else {
-            cout << "Consumer: Buffer empty, unable to remove item" << endl; // Shouldn't come here
+            cout << "Consumer: Buffer empty, unable to remove item" << endl;
         }
     }
     return nullptr;
